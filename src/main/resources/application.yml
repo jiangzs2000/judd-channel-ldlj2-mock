@@ -1,0 +1,267 @@
+default:
+  readTimeout: 60000
+  connectTimeout: 60000
+
+spring:
+  profiles:
+    #active: @profileActive@
+  rest:
+    connection:
+      connection-request-timeout: ${default.connectTimeout}
+      connect-timeout: ${default.connectTimeout}
+      read-timeout: ${default.readTimeout}
+  datasource:
+    jdbc-url: jdbc:mysql://192.168.1.12:3306/foundation?autoReconnect=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
+    username: "service"
+    password: "!Service123"
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 15
+      auto-commit: true
+      idle-timeout: 30000
+      pool-name: DatebookHikariCP1
+      max-lifetime: 1800000
+      connection-timeout: 30000
+      connection-test-query: SELECT 1
+  transaction: #transaction
+    default-timeout: 10
+    rollback-on-commit-failure: true
+  redis:
+    host: 192.168.1.12
+    port: 6379
+    pool:
+      max-idle: 100 # 连接池中的最大空闲连接
+      min-idle: 10 # 连接池中的最小空闲连接
+      max-active: 1000 #连接池最大连接数（使用负值表示没有限制）
+      max-wait: 5000 # 连接池最大阻塞等待时间（使用负值表示没有限制）
+    timeout: 2000 # 连接超时时间（毫秒）
+      #sentinel:
+      #master: # name of Redis server
+      #nodes: # comma-separated list of host:port pairs
+  http:
+    multipart: #上传文件大小限制
+      max-file-size: 50Mb
+      max-request-siz: 50Mb
+
+
+
+  fegin:
+    request:
+      connectTimeoutMillis: ${default.connectTimeout}
+      readTimeoutMillis: ${default.readTimeout}
+
+feign:
+  hystrix:
+    enabled: true
+
+hystrix:
+  command:
+    default:
+      circuitBreaker:
+        requestVolumeThreshold: 50
+        sleepWindowInMilliseconds: 120
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: ${default.readTimeout}
+  threadpool:
+    default:
+      coreSize: 10
+      maximumSize: 50
+      maxQueueSize: 200
+      queueSizeRejectionThreshold: 100
+      allowMaximumSizeToDivergeFromCoreSize: true
+      keepAliveTimeMinutes: 1
+
+#ribbon负载均衡算法
+com:
+  shuyuan:
+    judd:
+      fundation:
+        ribbon:
+          NFLoadBalancerRuleClassName: com.netflix.loadbalancer.BestAvailableRule
+          ServerListRefreshInterval: 5000
+
+logging:
+  level:
+    root: info
+
+#联动接入参数
+#正式商户号
+merchant:
+  id: 51118
+
+#FTP上传资质
+ftp:
+  host: 210.74.1.248
+  userName: ${merchant.id}
+  password: 4Msr7IS6
+  port: 21
+  netInPath: materials/
+  duizhangPath: duizhang/
+
+#saas图文验证码校验请求地址
+saas:
+  verify_captcha:
+    url: http://api.ih2ome.cn/api/v2/account/verify_captcha
+
+#聚多多域名
+judd:
+  domain:
+    name: http://finances.ih2ome.cn/
+  #子商户入网结果通知地址
+  callback:
+    url: ${judd.domain.name}callback/commercial/register
+  #子商户入网上传资质通知回调地址
+  uploadNotice:
+    url: ${judd.domain.name}callback/commercial/uploadNotice
+  #子商户入网资质审核通知地址
+  audit:
+    url: ${judd.domain.name}callback/commercial/audit
+  #子商户绑卡下单回调地址
+  card:
+    bindNotice:
+      url: ${judd.domain.name}callback/commercial/bindCard
+
+#联动接口域名
+ld:
+  domain:
+    name: http://b2b.umfintech.com/
+ldlj:
+  url:
+    prefix: ${ld.domain.name}merAccess/
+  upload:
+    #子商户资质上传通知地址
+    url: ${ldlj.url.prefix}register/uploadMaterials
+  #绑卡地址
+  card:
+    bind:
+      url: ${ldlj.url.prefix}bindcard/order
+    #获取验证要素地址，快捷支付
+    verify:
+      url: ${ldlj.url.prefix}payment/quick/order
+  #绑卡确认地址
+  bindcard:
+    confirm:
+      url: ${ldlj.url.prefix}bindcard/confirm
+  #资质图片下载文件目录
+  download:
+    catalogue: /app/financefinance/catalogue
+####****银行卡快捷支付，下发支付验证码地址
+  pay:
+    verify:
+      url: ${ldlj.url.prefix}payment/quick/verifyCode
+    ####****银行卡快捷支付，支付确认地址
+    confirm:
+      url: ${ldlj.url.prefix}payment/quick/confirm
+    #微信和支付宝支付地址
+    wx:
+      url: ${ldlj.url.prefix}
+    #支付宝公众号微信公众号支付
+    wechatplatformpay:
+      url: ${ldlj.url.prefix}payment/wechatPlatformPay
+    #微信app支付
+    wxapppay:
+      url: ${ldlj.url.prefix}payment/appPayOrder
+    #支付宝公众号支付地址
+    alipayvipcn:
+      url: ${ldlj.url.prefix}consume/zspay
+    #B2B网银 and B2C个人网银支付地址
+    ebankspay:
+      url: ${ldlj.url.prefix}payment/ebank
+    #退款交易地址
+    refund:
+      url: ${ldlj.url.prefix}refund/refundOrder
+      #退款查询地址
+      query:
+        url: ${ldlj.url.prefix}refund/orderInfo
+    #平台提现地址
+    withdrawal:
+      url: ${ldlj.url.prefix}withdrawal/platMerWithdrawal
+      #提现查询
+      query:
+        url: ${ldlj.url.prefix}withdrawal/orderInfo
+    #子商户提现地址
+    member:
+      withdrawal:
+        url: ${ldlj.url.prefix}withdrawal/balanceWithdrawal
+
+  #####Trade类，创建订单地址
+  trade:
+    order:
+      create:
+        url: ${ldlj.url.prefix}consume/genaralOrder
+      #####Trade类，订单完成地址
+      finish:
+        url: ${ldlj.url.prefix}consume/finishOrder
+      #####Trade类，交易查询地址
+      query:
+        url: ${ldlj.url.prefix}consume/orderInfo
+  #查询平台余额地址
+  balance:
+    query:
+      url: ${ldlj.url.prefix}mer/balance
+  #查询子商户余额地址
+  member:
+    balance:
+      url: ${ldlj.url.prefix}member/balance
+
+#微信APPID
+wechat:
+  official:
+    appid: wxed1a36ce3fa969f5
+
+#####商户注册类
+register:
+  #个人商户入网接口地址
+  personal:
+    url: ${ldlj.url.prefix}register/personal
+  #个体商户入网接口地址
+  individual:
+    url: ${ldlj.url.prefix}register/individual
+#企业商户入网接口地址
+  company:
+    url: ${ldlj.url.prefix}register/mer
+
+#支付回调
+notify:
+  url: ${judd.domain.name}callback/payment/accessNotify
+
+
+
+#交易（同步/异步）
+
+#惠商创建 虚拟订单（业务订单）
+
+#集成商商户号
+huishang:
+  integration:
+    merchant:
+      id: 0002
+  #惠商测试商户号
+  merchantNo: 30008205
+  #加签证书 证书名称
+  certificate:
+    name: 0002_0002.key.p8
+  #公众号/小程序支付(创建虚拟订单（业务订单）)
+  virtual:
+    pay:
+      creade:
+        order:
+          url: /api/unifiedcode
+#惠商支付回调
+  notify:
+    url: ${judd.domain.name}callback/payment/accessHSNotify
+
+
+
+
+
+
+
+
+
+
+
+
+
