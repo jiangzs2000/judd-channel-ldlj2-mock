@@ -1,0 +1,36 @@
+server:
+  port: 7013
+management:
+  port: 7012
+  add-application-context-header: false
+  security:
+    enabled: false
+#去哪儿找配置文件，只能写在bootstrap里（比application先加载）
+#git里配置文件为${spring.application.name}-${spring.cloud.config.profile}.properties
+#profile类型
+spring:
+  profiles:
+    active: dev
+  application:
+    name: com.shuyuan.judd.channel.ldlj
+  main:
+    allow-bean-definition-overriding: true
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.1.12:8848
+      config:
+        server-addr: 192.168.1.12:8848
+
+endpoints:
+  shutdown:
+    enabled: true
+    sensitive: false
+
+
+
+
+
+
+
+

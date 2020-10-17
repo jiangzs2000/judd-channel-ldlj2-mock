@@ -1,6 +1,5 @@
 package com.shuyuan.judd.channel.ldlj;
 
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,7 +13,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication
 @EnableTransactionManagement
 //@EnableScheduling
-@MapperScan("com.shuyuan.judd.bizreadiness.dataaccess.mapper")
 @EnableDiscoveryClient
 @EnableFeignClients
 @EnableCircuitBreaker

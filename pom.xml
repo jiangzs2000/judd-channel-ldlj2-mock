@@ -13,7 +13,6 @@
     <packaging>jar</packaging>
     <name>judd-channel-ldlj2-mock</name>
     <description>spring.cloud, by Spring Boot</description>
-
     <dependencies>
         <dependency>
             <groupId>com.shuyuan.judd</groupId>
@@ -51,40 +50,17 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
-        <!--<resources>-->
-        <!--<resource>-->
-        <!--<directory>src/main/resources</directory>-->
-        <!--&lt;!&ndash; 是否分环境过滤 &ndash;&gt;-->
-        <!--<filtering>true</filtering>-->
-        <!--<excludes>-->
-        <!--<exclude>application.properties.bak</exclude>-->
-        <!--<exclude>application-*.properties</exclude>-->
-        <!--<exclude>cert/*</exclude>-->
-        <!--</excludes>-->
-        <!--</resource>-->
-        <!--<resource>-->
-        <!--<directory>src/main/resources</directory>-->
-        <!--<filtering>true</filtering>-->
-        <!--<includes>-->
-        <!--<include>application-${profileActive}.properties</include>-->
-        <!--<include>application.properties.bak</include>-->
-        <!--</includes>-->
-        <!--</resource>-->
-        <!--<resource>-->
-        <!--<directory>src/main/resources</directory>-->
-        <!--<filtering>false</filtering>-->
-        <!--<includes>-->
-        <!--<include>cert/*</include>-->
-        <!--</includes>-->
-        <!--</resource>-->
-        <!--</resources>-->
-
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
