@@ -4,11 +4,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.shuyuan.judd.client.constants.ChannelConstants;
 import com.shuyuan.judd.client.model.request.MerchantBindCardOrderRequest;
 import com.shuyuan.judd.client.model.request.UploadMaterialRequest;
-import com.shuyuan.judd.client.model.request.portal.RegisterMerchant2ChannelRequest;
+import com.shuyuan.judd.client.model.request.portal.ChannelProvisionRequest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.*;
 import spring.shuyuan.judd.base.model.Response;
 import spring.shuyuan.judd.base.utils.RandomUtils;
@@ -34,7 +33,7 @@ public class MerchantControllerMock {
     @PostMapping("/register/person")
     @ResponseBody
     @ApiOperation(value = " 个人调用联动入网,map.put(ChannelConstants.MERCHANT_CHANNEL_NO, resultMap.getData().get(\"user_id\").toString());")
-    public Response<Map<String, String>> registerPersonal(@RequestBody RegisterMerchant2ChannelRequest req) {
+    public Response<Map<String, String>> registerPersonal(@RequestBody ChannelProvisionRequest req) {
         log.info("req: {}",JSONObject.toJSONString(req));
         //获取个人入网提交结果
         Response<Map<String, String>> res;
@@ -59,7 +58,7 @@ public class MerchantControllerMock {
     @PostMapping("/register/individual")
     @ResponseBody
     @ApiOperation(value = "个体调用联动优势入网, map.put(ChannelConstants.MERCHANT_CHANNEL_NO, resultMap.getData().get(\"user_id\").toString());")
-    public Response<Map<String, String>> registerIndividual(@RequestBody RegisterMerchant2ChannelRequest req) throws Exception {
+    public Response<Map<String, String>> registerIndividual(@RequestBody ChannelProvisionRequest req) throws Exception {
         log.info("req: {}",JSONObject.toJSONString(req));
         //获取个体入网提交结果
         Response<Map<String, String>> res;
@@ -86,7 +85,7 @@ public class MerchantControllerMock {
     @ResponseBody
     @ApiOperation(value = "企业入网,map.put(ChannelConstants.MERCHANT_CHANNEL_NO, resultMap.getData().get(\"user_id\").toString());\n" +
             "            map.put(ChannelConstants.P_AGREEMENT_ID, resultMap.getData().get(\"p_agreement_id\").toString());")
-    public Response<Map<String, String>> registerCompany(@RequestBody RegisterMerchant2ChannelRequest req) {
+    public Response<Map<String, String>> registerCompany(@RequestBody ChannelProvisionRequest req) {
         log.info("req: {}",JSONObject.toJSONString(req));
         //获取企业入网提交结果
         Response<Map<String, String>> res;
